@@ -1,0 +1,119 @@
+RUN hardware_data_collection_plx_script_macros_release();
+
+SET f1_instance = '/f1/query/prod';
+
+CREATE OR REPLACE TABLE rf2mpga.pixel_fl5_factory_all_test_items OPTIONS (
+  quota_accounting_owner = 'mdb/rf2mpga'
+) AS
+  SELECT 
+    t.DeviceInfo.device_id as dut_id,
+    t.DeviceInfo.software_version as software_version,
+    t.DeviceInfo.firmware_version as firmware_version,
+    t.DeviceInfo.device_config as device_config,
+    t.DeviceInfo.build_phase as build_phase,
+    t.DeviceInfo.sub_build_phase as sub_build_phase,
+
+    t.FactoryInfo.manufacturer as manufacturer,
+    t.FactoryInfo.location as location,
+    t.FactoryInfo.line as line,
+    t.FactoryInfo.line_id as line_id,
+    t.FactoryInfo.station_id as station_id,
+    t.FactoryInfo.station_name as station_name,
+    t.FactoryInfo.station_type as station_type,
+    t.FactoryInfo.factory_code as factory_code,
+
+    t.TestResult.status as status,
+    t.TestResult.failure_code as failure,
+
+    t.TestEventInfo.test_name as test_name,
+    t.TestEventInfo.test_description as test_description,
+    t.TestEventInfo.mode as mode,
+    t.TestEventInfo.framework_version as framework_version,
+    t.TestEventInfo.test_version as test_version,
+    t.TestEventInfo.start_time_ms as start_time_ms,
+    t.TestEventInfo.end_time_ms as end_time_ms,
+    t.TestEventInfo.slot_id as slot_id,
+    t.TestEventInfo.cof_on as cof_on,
+    t.TestEventInfo.scof_on as scof_on,
+    t.TestEventInfo.check_in_time_ms as check_in_time_ms,
+    t.TestEventInfo.spec_version as spec_version,
+    t.TestEventInfo.msa_id as msa_id,
+
+    measurements.name as measurements_name,
+    -- SPLIT(measurements.name, '_')[safe_offset(0)] as measurements_rat,
+    -- SPLIT(SPLIT(measurements.name, '_')[safe_offset(1)],'-')[safe_offset(0)]  as measurements_band_cat,
+    -- SPLIT(SPLIT(measurements.name, '_')[safe_offset(1)],'-')[safe_offset(1)]  as measurements_band,
+    -- SPLIT(measurements.name, '_')[safe_offset(3)] as measurements_path,
+    -- SPLIT(measurements.name, '_')[safe_offset(4)] as measurements_ant,
+    -- SPLIT(measurements.name, '_')[safe_offset(5)] as measurements_bw,
+    -- SPLIT(measurements.name, '_')[safe_offset(6)] as measurements_mod,
+    -- SPLIT(measurements.name, '_')[safe_offset(7)] as measurements_rb_alloc,
+
+
+
+    measurements.description as measurements_description,
+    measurements.status as measurements_status,
+    measurements.numeric_values[SAFE_OFFSET(0)] as measurements_value,
+    measurements.numeric_min_limit.value as measurements_numeric_min,
+    measurements.numeric_max_limit.value as measurements_numeric_max,
+    measurements.unit as measurements_unit,
+    measurements.text_values[SAFE_OFFSET(0)] as measurements_text_value,
+    measurements.expected_text_values[SAFE_OFFSET(0)] as measurements_expected_text_value,
+
+    measurements.scof_numeric_min_limit.value as measurements_scof_numeric_min,
+    measurements.scof_numeric_max_limit.value as measurements_scof_numeric_max,
+    measurements.scof_expected_text_values[SAFE_OFFSET(0)] as measurements_scof_expected_text_value,
+    SPLIT(measurements.name, '_')[safe_offset(0)] as measurements_rat,
+    SPLIT(SPLIT(measurements.name, '_')[safe_offset(1)],'-')[safe_offset(0)] as measurements_band_cat,
+    SPLIT(SPLIT(measurements.name, '_')[safe_offset(1)],'-')[safe_offset(1)] as measurements_band,
+    LEFT(SPLIT(measurements.name, '_')[safe_offset(2)], 3) as measurements_chan_cat,
+    SPLIT(measurements.name, '_')[safe_offset(3)] as measurements_path,
+    SPLIT(measurements.name, '_')[safe_offset(4)] as measurements_ant,
+    (CASE SPLIT(measurements.name, '_')[safe_offset(0)]
+      WHEN 'LTE' THEN SPLIT(measurements.name, '_')[safe_offset(5)]
+      WHEN 'NR5G' THEN SPLIT(measurements.name, '_')[safe_offset(5)]
+      ELSE NULL
+      END
+      ) as measurements_bw,
+    (CASE SPLIT(measurements.name, '_')[safe_offset(0)]
+      WHEN 'LTE' THEN SPLIT(measurements.name, '_')[safe_offset(6)]
+      WHEN 'NR5G' THEN SPLIT(measurements.name, '_')[safe_offset(8)]
+      WHEN 'GSM' THEN SPLIT(measurements.name, '_')[safe_offset(5)]
+      ELSE NULL
+      END
+      ) as measurements_mod,
+    (CASE SPLIT(measurements.name, '_')[safe_offset(0)]
+      WHEN 'LTE' THEN SPLIT(measurements.name, '_')[safe_offset(7)]
+      WHEN 'NR5G' THEN SPLIT(measurements.name, '_')[safe_offset(9)]
+      ELSE NULL
+      END
+      ) as measurements_rb_alloc,
+
+    (CASE SPLIT(measurements.name, '_')[safe_offset(0)]
+      WHEN 'NR5G' THEN SPLIT(measurements.name, '_')[safe_offset(7)]
+      ELSE NULL
+      END
+      ) as measurements_waveform,
+
+    (CASE SPLIT(measurements.name, '_')[safe_offset(0)]
+      WHEN 'LTE' THEN SPLIT(measurements.name, '_')[safe_offset(9)]
+      WHEN 'NR5G' THEN SPLIT(measurements.name, '_')[safe_offset(11)]
+      ELSE NULL
+      END
+      ) as power_class,
+
+
+    FROM hardware_mfg_data.capacitor.pixel_fl5_phone_test as t,
+    unnest (t.TestResult.phases) as phases,
+    unnest (phases.measurements) as measurements
+    WHERE t.FactoryInfo.station_name LIKE '%SMT-RF-CELL%'
+      or t.FactoryInfo.station_name = 'SA-REFLASH'
+    
+
+
+
+
+
+-- SET SQL_DIALECT DremelSQL;
+-- GRANT READER ON TABLE rf2mpga.pixel_fl5_factory_all_test_items to 'mdb/rf2mpga';
+-- GRANT READER ON TABLE rf2mpga.pixel_fl5_factory_all_test_items to 'mdb/hardware-pixel-tpe-rf';
