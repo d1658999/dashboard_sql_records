@@ -1,0 +1,53 @@
+SELECT DISTINCT
+    -- projectCode,
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    -- sample,
+    testDate AS date,
+    testResult AS result,
+    -- config,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    -- outsourcing_lab,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+  and project in ('FL5')
+  and cycleName LIKE '%NPI_Final%'
+  and testRun = '1st'
+  and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+       or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+       or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+       or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+       or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+       or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+       or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+       or testSpec = '3GPP TS 38.521-1'
+       or testSpec = '3GPP TS 38.521-3')
+
+
+
+
+                              
