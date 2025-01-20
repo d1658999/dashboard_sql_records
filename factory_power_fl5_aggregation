@@ -1,0 +1,95 @@
+SELECT 
+  measurements_name,
+  AVG(measurements_numeric_min) AS limit_lower,
+  AVG(measurements_numeric_max) AS limit_upper,
+  MIN(measurements_value) AS min,
+  PERCENTILE_DISC(measurements_value, 0.5) AS median,
+  PERCENTILE_DISC(measurements_value, 0.25) AS Q1,
+  PERCENTILE_DISC(measurements_value, 0.75) AS Q3,
+  MAX(measurements_value) AS max,
+  AVG(measurements_value) AS avg,
+  SPLIT(measurements_name, '_')[safe_offset(0)] as measurements_rat,
+SPLIT(SPLIT(measurements_name, '_')[safe_offset(1)],'-')[safe_offset(0)] as measurements_band_cat,
+SPLIT(SPLIT(measurements_name, '_')[safe_offset(1)],'-')[safe_offset(1)] as measurements_band,
+LEFT(SPLIT(measurements_name, '_')[safe_offset(2)], 3) as measurements_chan_cat,
+SPLIT(measurements_name, '_')[safe_offset(3)] as measurements_path,
+SPLIT(measurements_name, '_')[safe_offset(4)] as measurements_ant,
+(CASE SPLIT(measurements_name, '_')[safe_offset(0)]
+	WHEN 'LTE' THEN SPLIT(measurements_name, '_')[safe_offset(5)]
+	WHEN 'NR5G' THEN SPLIT(measurements_name, '_')[safe_offset(5)]
+	ELSE NULL
+	END
+	) as measurements_bw,
+(CASE SPLIT(measurements_name, '_')[safe_offset(0)]
+	WHEN 'LTE' THEN SPLIT(measurements_name, '_')[safe_offset(6)]
+	WHEN 'NR5G' THEN SPLIT(measurements_name, '_')[safe_offset(8)]
+	WHEN 'GSM' THEN SPLIT(measurements_name, '_')[safe_offset(5)]
+	ELSE NULL
+	END
+	) as measurements_mod,
+(CASE SPLIT(measurements_name, '_')[safe_offset(0)]
+	WHEN 'LTE' THEN SPLIT(measurements_name, '_')[safe_offset(7)]
+	WHEN 'NR5G' THEN SPLIT(measurements_name, '_')[safe_offset(9)]
+	ELSE NULL
+	END
+	) as measurements_rb_alloc,
+
+(CASE SPLIT(measurements_name, '_')[safe_offset(0)]
+	WHEN 'NR5G' THEN SPLIT(measurements_name, '_')[safe_offset(7)]
+	ELSE NULL
+	END
+	) as measurements_waveform,
+(CASE SPLIT(measurements_name, '_')[safe_offset(0)]
+	WHEN 'LTE' THEN SPLIT(measurements_name, '_')[safe_offset(9)]
+	WHEN 'NR5G' THEN SPLIT(measurements_name, '_')[safe_offset(11)]
+	ELSE NULL
+	END
+	) as power_class,
+
+  
+    
+FROM rf2mpga.pixel_fl5_factory_all_test_items
+-- WHERE dut_id = '1FDG65016417000B4CD0002V'
+-- and measurements_name like '%tx_power%'
+WHERE measurements_name like '%tx_power%'
+and measurements_status = 'TEST_PASS'
+and build_phase = 'EVT'
+and sub_build_phase = '1.1'
+and mode = 'PRODUCTION'
+
+
+GROUP BY
+  measurements_name
+  
+ORDER BY
+CASE measurements_rat
+	WHEN 'NR5G' THEN 1
+	WHEN 'LTE' THEN 2
+	WHEN 'WCDMA' THEN 3
+	WHEN 'GSM' THEN 4
+	ELSE 5
+	END,
+power_class ASC, 
+measurements_band ASC,
+CASE measurements_path
+	WHEN 'TxMain' THEN 1
+	WHEN 'TxSub' THEN 2
+	WHEN 'TxMainAS' THEN 3
+    WHEN 'TxSubAS' THEN 4
+    WHEN 'TxMainSRS3' THEN 5
+    WHEN 'TxMainSRS4' THEN 6
+	ELSE 7
+	END,
+CASE measurements_chan_cat
+	WHEN 'LCH' THEN 1
+	WHEN 'MCH' THEN 2
+	WHEN 'HCH' THEN 3
+	ELSE 4
+	END
+  
+
+
+limit 100000000
+
+  
+
