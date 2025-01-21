@@ -1,8 +1,7 @@
 WITH
   mt5_ptcrb_status_latest_mmw AS (
   SELECT DISTINCT
-    -- projectCode,
-    -- project,
+    project,
     sku,
     testSpec AS test_spec,
     tc_ID AS tc_id,
@@ -12,10 +11,8 @@ WITH
     reason_for_test AS reason_for_testing,
     PTCRB_cat as ptcrb_cat,
     GCF_cat AS gcf_cat,
-    -- sample,
     testDate AS date,
     testResult AS result,
-    -- config,
     tp_id,
     hw,
     sw,
@@ -25,7 +22,6 @@ WITH
     imei,
     gcfValidPlatform,
     ptcrbValidPlatform,
-    -- outsourcing_lab,
     addinfo,
     testCaseRelease,
     carrier,
@@ -40,14 +36,21 @@ WITH
     and project in ('MT5')   
     and cycleName LIKE '%NPI_Final%'
     and testRun = '4th'
-    -- and sku = 'USmmW'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
                               
 
   ),
 
   bz5_ptcrb_status_latest_mmw AS (
   SELECT DISTINCT
-    -- projectCode,
     project,
     sku,
     testSpec AS test_spec,
@@ -58,10 +61,8 @@ WITH
     reason_for_test AS reason_for_testing,
     PTCRB_cat as ptcrb_cat,
     GCF_cat AS gcf_cat,
-    -- sample,
     testDate AS date,
     testResult AS result,
-    -- config,
     tp_id,
     hw,
     sw,
@@ -71,7 +72,6 @@ WITH
     imei,
     gcfValidPlatform,
     ptcrbValidPlatform,
-    -- outsourcing_lab,
     addinfo,
     testCaseRelease,
     carrier,
@@ -86,7 +86,16 @@ WITH
     and project in ('BZ5')     
     and cycleName LIKE '%NPI_Final%'
     and testRun = '4th'
-    -- and sku = 'USmmW'      
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+         
 
   ),
 
@@ -103,10 +112,8 @@ WITH
     reason_for_test AS reason_for_testing,
     PTCRB_cat as ptcrb_cat,
     GCF_cat AS gcf_cat,
-    -- sample,
     testDate AS date,
     testResult AS result,
-    -- config,
     tp_id,
     hw,
     sw,
@@ -116,7 +123,6 @@ WITH
     imei,
     gcfValidPlatform,
     ptcrbValidPlatform,
-    -- outsourcing_lab,
     addinfo,
     testCaseRelease,
     carrier,
@@ -131,26 +137,34 @@ WITH
     and project in ('FL5')
     and cycleName LIKE '%NPI_Final%'     
     and testRun = '4th'
-  and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
-       or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
-       or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
-       or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
-       or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
-       or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
-       or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
-       or testSpec = '3GPP TS 38.521-1'
-       or testSpec = '3GPP TS 38.521-3')
-
-
-    -- and sku = 'USmmW'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
                               
+  ),
 
-  )
+  testCaseUniqueId_table AS (
+    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun  FROM mt5_ptcrb_status_latest_mmw
+    UNION DISTINCT
+    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun FROM bz5_ptcrb_status_latest_mmw
+    UNION DISTINCT
+    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun FROM fl5_ptcrb_status_latest_mmw)
 
-SELECT DISTINCT
-  testCaseUniqueId,
-  mt5_ptcrb_status_latest_mmw.reason_for_testing as Priority,
-  mt5_ptcrb_status_latest_mmw.tc_description,
+
+
+SELECT 
+  t.testCaseUniqueId,
+  t.tc_description,
+  t.testBand,
+  t.tc_id,
+  t.test_spec,
+  t.testRun,
   mt5_ptcrb_status_latest_mmw.result AS mt5_status,
   bz5_ptcrb_status_latest_mmw.result AS bz5_status,
   fl5_ptcrb_status_latest_mmw.result AS fl5_status,
@@ -178,21 +192,13 @@ SELECT DISTINCT
   mt5_ptcrb_status_latest_mmw.sku AS mt5_sku,
   bz5_ptcrb_status_latest_mmw.sku AS bz5_sku,
   fl5_ptcrb_status_latest_mmw.sku AS fl5_sku,
-  mt5_ptcrb_status_latest_mmw.testBand,
-  mt5_ptcrb_status_latest_mmw.tc_id,
-  mt5_ptcrb_status_latest_mmw.test_spec,
-  mt5_ptcrb_status_latest_mmw.testRun
 
 
-FROM mt5_ptcrb_status_latest_mmw
+FROM testCaseUniqueId_table AS t
+LEFT JOIN mt5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
 LEFT JOIN bz5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
 LEFT JOIN fl5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
 
-ORDER BY
-  CASE 
-    WHEN mt5_status = 'Failed' THEN 1
-    WHEN mt5_status = 'Passed' THEN 2
-    ELSE 3
-    END
+
 
 
