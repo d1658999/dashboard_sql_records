@@ -1,0 +1,128 @@
+WITH 
+  vzw_status_mt5_f AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'MT5'
+    and (testPlan LIKE '%5GNRFR1SUPPRF%' or testPlan LIKE '%5GNRNSA3GPPFR1%')
+    and cycleName LIKE '%Final_1st_F%'
+  ),
+
+  vzw_status_mt5_p AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'MT5'
+    and (testPlan LIKE '%SUPRFCONF13%' or testPlan LIKE '%3GPPB%RFC%'or testPlan LIKE '%3GPPB%SC%')
+    and cycleName LIKE '%Final_1st_F%'
+  ),
+
+  vzw_status_mt5_p_2 AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'MT5'
+    and (testPlan LIKE '%5GNRFR1SUPPR F%' or testPlan LIKE '%5GNRNSA3GPPFR1%')
+    and cycleName LIKE '%Final_1st_F%'
+    -- and testresult != 'NIS' 
+  ),
+
+  vzw_status_bz5_f AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'BZ5'
+    and (testPlan LIKE '%5GNRFR1SUPPRF%' or testPlan LIKE '%5GNRNSA3GPPFR1%')
+    and cycleName LIKE '%Final_1st_F%'
+  ),
+
+  vzw_status_bz5_p AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'BZ5'
+    and (testPlan LIKE '%SUPRFCONF13%' or testPlan LIKE '%3GPPB%RFC%'or testPlan LIKE '%3GPPB%SC%')
+    and cycleName LIKE '%Final_1st_F%'
+  ),
+
+  vzw_status_fl5_f AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'FL5'
+    and (testPlan LIKE '%5GNRFR1SUPPRF%' or testPlan LIKE '%5GNRNSA3GPPFR1%')
+    and cycleName LIKE '%Final_1st_F%'
+  ),
+
+  vzw_status_fl5_p AS (
+  SELECT *
+
+  FROM google.carriercert_VZW_status_latest
+  WHERE project = 'FL5'
+    and (testPlan LIKE '%SUPRFCONF13%' or testPlan LIKE '%3GPPB%RFC%'or testPlan LIKE '%3GPPB%SC%')
+    and cycleName LIKE '%Final_1st_F%'
+  ),
+
+  vzw_status_mt5 AS (
+  SELECT * FROM vzw_status_mt5_p 
+  UNION ALL
+  SELECT * FROM vzw_status_mt5_f
+
+  ),
+
+  vzw_status_bz5 AS (
+  SELECT * FROM vzw_status_bz5_p 
+  UNION ALL
+  SELECT * FROM vzw_status_bz5_f
+  ),
+
+  vzw_status_fl5 AS (
+  SELECT * FROM vzw_status_fl5_p 
+  UNION ALL
+  SELECT * FROM vzw_status_fl5_f
+  )
+  
+
+SELECT 
+  vzw_status_mt5.testCaseUniqueID AS test_case_unique_id,
+  vzw_status_mt5.band,
+  vzw_status_mt5.testCaseDescription,
+  vzw_status_mt5.tc_id,
+  vzw_status_mt5.testPlan AS test_plan,
+  vzw_status_mt5.testResult AS mt5_status,
+  vzw_status_bz5.testResult AS bz5_status,
+  vzw_status_fl5.testResult AS fl5_status,
+  vzw_status_mt5.testDate AS mt5_date,
+  vzw_status_bz5.testDate AS bz5_date,
+  vzw_status_fl5.testDate AS fl5_date,
+  vzw_status_mt5.sw AS mt5_rom,
+  vzw_status_bz5.sw AS bz5_rom,
+  vzw_status_fl5.sw AS fl5_rom,
+  vzw_status_mt5.executionTP AS mt5_tp,
+  vzw_status_bz5.executionTP AS bz5_tp,
+  vzw_status_fl5.executionTP AS fl5_tp,
+  vzw_status_mt5.comment AS mt5_comment,
+  vzw_status_bz5.comment AS bz5_comment, 
+  vzw_status_fl5.comment AS fl5_comment,
+  vzw_status_mt5.logPath AS mt5_logPath,
+  vzw_status_bz5.logPath AS bz5_logPath, 
+  vzw_status_fl5.logPath AS fl5_logPath,
+  vzw_status_mt5.testlab AS mt5_testlab,
+  vzw_status_bz5.testlab AS bz5_testlab, 
+  vzw_status_fl5.testlab AS fl5_testlab,
+
+
+
+FROM vzw_status_mt5
+LEFT JOIN vzw_status_bz5 USING (testCaseUniqueID)
+LEFT JOIN vzw_status_fl5 USING (testCaseUniqueID)
+
+
+WHERE (vzw_status_mt5.testResult != 'NA' )
+
+
+
+ORDER BY test_plan DESC, test_case_unique_id ASC
+
+
+
