@@ -1,0 +1,198 @@
+WITH
+  mt5_ptcrb_status_latest_mmw AS (
+  SELECT DISTINCT
+    -- projectCode,
+    -- project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    -- sample,
+    testDate AS date,
+    testResult AS result,
+    -- config,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    -- outsourcing_lab,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('MT5')   
+    and cycleName LIKE '%NPI_Final%'
+    and testRun = '4th'
+    -- and sku = 'USmmW'
+                              
+
+  ),
+
+  bz5_ptcrb_status_latest_mmw AS (
+  SELECT DISTINCT
+    -- projectCode,
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    -- sample,
+    testDate AS date,
+    testResult AS result,
+    -- config,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    -- outsourcing_lab,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('BZ5')     
+    and cycleName LIKE '%NPI_Final%'
+    and testRun = '4th'
+    -- and sku = 'USmmW'      
+
+  ),
+
+  fl5_ptcrb_status_latest_mmw AS (
+  SELECT DISTINCT
+    -- projectCode,
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    -- sample,
+    testDate AS date,
+    testResult AS result,
+    -- config,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    -- outsourcing_lab,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('FL5')
+    and cycleName LIKE '%NPI_Final%'     
+    and testRun = '4th'
+  and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+       or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+       or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+       or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+       or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+       or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+       or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+       or testSpec = '3GPP TS 38.521-1'
+       or testSpec = '3GPP TS 38.521-3')
+
+
+    -- and sku = 'USmmW'
+                              
+
+  )
+
+SELECT DISTINCT
+  testCaseUniqueId,
+  mt5_ptcrb_status_latest_mmw.reason_for_testing as Priority,
+  mt5_ptcrb_status_latest_mmw.tc_description,
+  mt5_ptcrb_status_latest_mmw.result AS mt5_status,
+  bz5_ptcrb_status_latest_mmw.result AS bz5_status,
+  fl5_ptcrb_status_latest_mmw.result AS fl5_status,
+  mt5_ptcrb_status_latest_mmw.tp_id AS mt5_tp_id,
+  bz5_ptcrb_status_latest_mmw.tp_id AS bz5_tp_id,
+  fl5_ptcrb_status_latest_mmw.tp_id AS fl5_tp_id,
+  mt5_ptcrb_status_latest_mmw.date AS mt5_date,
+  bz5_ptcrb_status_latest_mmw.date AS bz5_date,
+  fl5_ptcrb_status_latest_mmw.date AS fl5_date,
+  mt5_ptcrb_status_latest_mmw.sw AS mt5_rom,
+  bz5_ptcrb_status_latest_mmw.sw AS bz5_rom,
+  fl5_ptcrb_status_latest_mmw.sw AS fl5_rom,
+  mt5_ptcrb_status_latest_mmw.comment AS mt5_note,
+  bz5_ptcrb_status_latest_mmw.comment AS bz5_note,
+  fl5_ptcrb_status_latest_mmw.comment AS fl5_note,
+  mt5_ptcrb_status_latest_mmw.logPath AS mt5_logPath,
+  bz5_ptcrb_status_latest_mmw.logPath AS bz5_logPath,
+  fl5_ptcrb_status_latest_mmw.logPath AS fl5_logPath,
+  mt5_ptcrb_status_latest_mmw.testLab AS mt5_testLab,
+  bz5_ptcrb_status_latest_mmw.testLab AS bz5_testLab,
+  fl5_ptcrb_status_latest_mmw.testLab AS fl5_testLab,
+  mt5_ptcrb_status_latest_mmw.exception_tp AS mt5_tp_equip,
+  bz5_ptcrb_status_latest_mmw.exception_tp AS bz5_tp_equip,
+  fl5_ptcrb_status_latest_mmw.exception_tp AS fl5_tp_equip,
+  mt5_ptcrb_status_latest_mmw.sku AS mt5_sku,
+  bz5_ptcrb_status_latest_mmw.sku AS bz5_sku,
+  fl5_ptcrb_status_latest_mmw.sku AS fl5_sku,
+  mt5_ptcrb_status_latest_mmw.testBand,
+  mt5_ptcrb_status_latest_mmw.tc_id,
+  mt5_ptcrb_status_latest_mmw.test_spec,
+  mt5_ptcrb_status_latest_mmw.testRun
+
+
+FROM mt5_ptcrb_status_latest_mmw
+LEFT JOIN bz5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
+LEFT JOIN fl5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
+
+ORDER BY
+  CASE 
+    WHEN mt5_status = 'Failed' THEN 1
+    WHEN mt5_status = 'Passed' THEN 2
+    ELSE 3
+    END
+
+
