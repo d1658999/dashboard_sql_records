@@ -202,8 +202,8 @@ SELECT DISTINCT
 
 
 FROM mt5_ptcrb_status_latest_mmw
-LEFT JOIN bz5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
-LEFT JOIN fl5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
+LEFT JOIN bz5_ptcrb_status_latest_mmw USING (testCaseUniqueId, sku)
+LEFT JOIN fl5_ptcrb_status_latest_mmw USING (testCaseUniqueId, sku)
 
 ORDER BY
   CASE 
