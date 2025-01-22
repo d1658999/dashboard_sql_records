@@ -1,0 +1,347 @@
+WITH
+  mt5_ptcrb_status_latest_evt1p1 AS (
+  SELECT DISTINCT
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    testDate AS date,
+    testResult AS result,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('MT5')   
+    and cycleName LIKE '%NPI_Final%'
+    and testRun = '4th'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+                              
+
+  ),
+
+  bz5_ptcrb_status_latest_evt1p1 AS (
+  SELECT DISTINCT
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    testDate AS date,
+    testResult AS result,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('BZ5')     
+    and cycleName LIKE '%NPI_Final%'
+    and testRun = '4th'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+         
+
+  ),
+
+  fl5_ptcrb_status_latest_evt1p1 AS (
+  SELECT DISTINCT
+    -- projectCode,
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    testDate AS date,
+    testResult AS result,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('FL5')
+    and cycleName LIKE '%NPI_Final%'     
+    and testRun = '4th'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+                              
+  ),
+
+    mt5_ptcrb_status_latest_evt1p0 AS (
+  SELECT DISTINCT
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    testDate AS date,
+    testResult AS result,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('MT5')   
+    and cycleName LIKE '%NPI_Final%'
+    and testRun = '1st'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+                              
+
+  ),
+
+  bz5_ptcrb_status_latest_evt1p0 AS (
+  SELECT DISTINCT
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    testDate AS date,
+    testResult AS result,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('BZ5')     
+    and cycleName LIKE '%NPI_Final%'
+    and testRun = '1st'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+         
+
+  ),
+
+  fl5_ptcrb_status_latest_evt1p0 AS (
+  SELECT DISTINCT
+    -- projectCode,
+    project,
+    sku,
+    testSpec AS test_spec,
+    tc_ID AS tc_id,
+    tc_Description AS tc_description,
+    parameter,
+    testBand,
+    reason_for_test AS reason_for_testing,
+    PTCRB_cat as ptcrb_cat,
+    GCF_cat AS gcf_cat,
+    testDate AS date,
+    testResult AS result,
+    tp_id,
+    hw,
+    sw,
+    testLab,
+    comment,
+    logPath,
+    imei,
+    gcfValidPlatform,
+    ptcrbValidPlatform,
+    addinfo,
+    testCaseRelease,
+    carrier,
+    importdate,
+    timestamp,
+    testCaseUniqueId,
+    testRun,
+    exception_tp
+
+  FROM google.carriercert_PTCRBGCF_status_latest
+  where carrier = 'PTCRBGCF'
+    and project in ('FL5')
+    and cycleName LIKE '%NPI_Final%'     
+    and testRun = '1st'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
+                              
+  ),
+
+  testCaseUniqueId_table_all AS (
+    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun, sku  FROM mt5_ptcrb_status_latest_evt1p0
+    UNION DISTINCT
+    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun, sku  FROM bz5_ptcrb_status_latest_evt1p0
+    UNION DISTINCT
+    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun, sku  FROM fl5_ptcrb_status_latest_evt1p0
+    )
+
+
+
+SELECT 
+  t.testCaseUniqueId,
+  t.tc_description,
+  t.testBand,
+  t.tc_id,
+  t.test_spec,
+  t.testRun,
+  -- (case mt5_ptcrb_status_latest_evt1p1.result
+  --     when 'Passed' then mt5_ptcrb_status_latest_evt1p1.result
+  --     when 'Failed' then mt5_ptcrb_status_latest_evt1p1.result
+  --     else  mt5_ptcrb_status_latest_evt1p0.result
+  --     end) AS mt5_status,
+  -- (case bz5_ptcrb_status_latest_evt1p1.result
+  --     when 'Passed' then bz5_ptcrb_status_latest_evt1p1.result
+  --     when 'Failed' then bz5_ptcrb_status_latest_evt1p1.result
+  --     else  bz5_ptcrb_status_latest_evt1p0.result
+  --     end) AS bz5_status,
+  (case fl5_ptcrb_status_latest_evt1p1.result
+      when 'Passed' then bz5_ptcrb_status_latest_evt1p1.result
+      when 'Failed' then bz5_ptcrb_status_latest_evt1p1.result
+      else  fl5_ptcrb_status_latest_evt1p0.result
+      end) AS fl5_status,
+
+
+
+FROM testCaseUniqueId_table_all AS t
+LEFT JOIN mt5_ptcrb_status_latest_evt1p1 USING (testCaseUniqueId)
+LEFT JOIN bz5_ptcrb_status_latest_evt1p1 USING (testCaseUniqueId)
+LEFT JOIN fl5_ptcrb_status_latest_evt1p1 USING (testCaseUniqueId)
+LEFT JOIN mt5_ptcrb_status_latest_evt1p0 USING (testCaseUniqueId)
+LEFT JOIN bz5_ptcrb_status_latest_evt1p0 USING (testCaseUniqueId)
+LEFT JOIN fl5_ptcrb_status_latest_evt1p0 USING (testCaseUniqueId)
+
+
+
+

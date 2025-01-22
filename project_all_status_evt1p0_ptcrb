@@ -40,6 +40,15 @@ WITH
     and project in ('MT5')   
     and cycleName LIKE '%NPI_Final%'
     and testRun = '1st'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
     -- and sku = 'USmmW'
                               
 
@@ -86,6 +95,15 @@ WITH
     and project in ('BZ5')     
     and cycleName LIKE '%NPI_Final%'
     and testRun = '1st'
+    and ((testSpec = '3GPP TS 36.521-1' and tc_id like '6.%')
+        or (testSpec = '3GPP TS 36.521-1' and tc_id like '7.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '12.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '13.%')
+        or (testSpec = '3GPP TS 51.010-1' and tc_id like '14.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '5.%')
+        or (testSpec = '3GPP TS 34.121-1' and tc_id like '6.%')
+        or testSpec = '3GPP TS 38.521-1'
+        or testSpec = '3GPP TS 38.521-3')
     -- and sku = 'USmmW'      
 
   ),
