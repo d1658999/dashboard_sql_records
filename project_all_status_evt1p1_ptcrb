@@ -1,6 +1,7 @@
 WITH
   mt5_ptcrb_status_latest_mmw AS (
   SELECT DISTINCT
+    ai_key, 
     project,
     sku,
     testSpec AS test_spec,
@@ -51,6 +52,7 @@ WITH
 
   bz5_ptcrb_status_latest_mmw AS (
   SELECT DISTINCT
+    ai_key, 
     project,
     sku,
     testSpec AS test_spec,
@@ -102,6 +104,7 @@ WITH
   fl5_ptcrb_status_latest_mmw AS (
   SELECT DISTINCT
     -- projectCode,
+    ai_key, 
     project,
     sku,
     testSpec AS test_spec,
@@ -150,15 +153,16 @@ WITH
   ),
 
   testCaseUniqueId_table AS (
-    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun  FROM mt5_ptcrb_status_latest_mmw
+    SELECT ai_key, testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun  FROM mt5_ptcrb_status_latest_mmw
     UNION DISTINCT
-    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun FROM bz5_ptcrb_status_latest_mmw
+    SELECT ai_key, testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun FROM bz5_ptcrb_status_latest_mmw
     UNION DISTINCT
-    SELECT testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun FROM fl5_ptcrb_status_latest_mmw)
+    SELECT ai_key, testCaseUniqueId, tc_description, testBand, tc_id, test_spec, testRun FROM fl5_ptcrb_status_latest_mmw)
 
 
 
 SELECT 
+  t.ai_key,
   t.testCaseUniqueId,
   t.tc_description,
   t.testBand,
@@ -195,9 +199,9 @@ SELECT
 
 
 FROM testCaseUniqueId_table AS t
-LEFT JOIN mt5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
-LEFT JOIN bz5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
-LEFT JOIN fl5_ptcrb_status_latest_mmw USING (testCaseUniqueId)
+LEFT JOIN mt5_ptcrb_status_latest_mmw USING (ai_key)
+LEFT JOIN bz5_ptcrb_status_latest_mmw USING (ai_key)
+LEFT JOIN fl5_ptcrb_status_latest_mmw USING (ai_key)
 
 
 
