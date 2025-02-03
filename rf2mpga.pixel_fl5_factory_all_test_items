@@ -48,7 +48,7 @@ CREATE OR REPLACE TABLE rf2mpga.pixel_fl5_factory_all_test_items OPTIONS (
     -- SPLIT(measurements.name, '_')[safe_offset(5)] as measurements_bw,
     -- SPLIT(measurements.name, '_')[safe_offset(6)] as measurements_mod,
     -- SPLIT(measurements.name, '_')[safe_offset(7)] as measurements_rb_alloc,
-
+    phases.name as phases_name,
 
 
     measurements.description as measurements_description,
