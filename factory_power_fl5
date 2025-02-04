@@ -27,6 +27,21 @@ CASE measurements_path
     WHEN 'TxMainSRS4' THEN 6
 	ELSE 7
 	END,
+
+CASE measurements_waveform
+	WHEN 'DFT-s-OFDM' THEN 1
+    WHEN 'CP-OFDM' THEN 2
+    ELSE 3
+    END,
+
+CASE measurements_mod
+	WHEN 'QPSK' THEN 1
+    WHEN '16QAM' THEN 2
+    WHEN '64QAM' THEN 3
+    WHEN '256QAM' THEN 4
+    ELSE 5
+    END,
+
 CASE measurements_chan_cat
 	WHEN 'LCH' THEN 1
 	WHEN 'MCH' THEN 2

@@ -28,12 +28,46 @@ CASE measurements_path
     WHEN 'TxMainSRS4' THEN 6
 	ELSE 7
 	END,
+
+CASE measurements_waveform
+	WHEN 'DFT-s-OFDM' THEN 1
+    WHEN 'CP-OFDM' THEN 2
+    ELSE 3
+    END,
+
+CASE measurements_mod
+	WHEN 'QPSK' THEN 1
+    WHEN '16QAM' THEN 2
+    WHEN '64QAM' THEN 3
+    WHEN '256QAM' THEN 4
+    ELSE 5
+    END,
+
 CASE measurements_chan_cat
 	WHEN 'LCH' THEN 1
 	WHEN 'MCH' THEN 2
 	WHEN 'HCH' THEN 3
 	ELSE 4
+	END,
+
+CASE
+	WHEN measurements_name LIKE '%_aclr_nr_neg' THEN 1
+	WHEN measurements_name LIKE '%_aclr_nr_pos' THEN 2
+	WHEN measurements_name LIKE '%_aclr_utra1_neg' THEN 3
+	WHEN measurements_name LIKE '%_aclr_utra1_pos' THEN 4
+	WHEN measurements_name LIKE '%_aclr_utra2_neg' THEN 5
+	WHEN measurements_name LIKE '%_aclr_utra2_pos' THEN 6
+	WHEN measurements_name LIKE '%_orfs_mod_neg400' THEN 7
+	WHEN measurements_name LIKE '%_orfs_mod_pos400' THEN 8
+	WHEN measurements_name LIKE '%_orfs_mod_neg600' THEN 9
+	WHEN measurements_name LIKE '%_orfs_mod_pos600' THEN 10
+	WHEN measurements_name LIKE '%_orfs_switch_neg400' THEN 11
+	WHEN measurements_name LIKE '%_orfs_switch_pos400' THEN 12
+	WHEN measurements_name LIKE '%_orfs_switch_neg600' THEN 13
+	WHEN measurements_name LIKE '%_orfs_switch_pos600' THEN 14
+	ELSE 15
 	END
+
 limit 100000000
 
   
