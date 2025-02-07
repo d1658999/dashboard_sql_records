@@ -3,8 +3,8 @@ SELECT *
 FROM rf2mpga.pixel_fl5_factory_all_test_items
 -- WHERE dut_id = '1FDG65016417000B4CD0002V'
 -- and measurements_name like '%tx_power%'
-WHERE measurements_name like '%aclr%'
-OR measurements_name like '%orfs%'
+WHERE measurements_name like '%aclr_nr_neg%'
+OR measurements_name like '%eutra_neg%'
 -- and measurements_status = 'TEST_PASS'
 -- and build_phase = 'EVT'
 -- and sub_build_phase = '1.1'
