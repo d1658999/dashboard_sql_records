@@ -60,7 +60,7 @@ WITH
   FROM google.carriercert_VZW_status_latest
   WHERE project = 'FL5'
     and (testPlan LIKE '%SUPRFCONF13%' or testPlan LIKE '%3GPPB%RFC%'or testPlan LIKE '%3GPPB%SC%')
-    and cycleName LIKE '%_Final_F%'
+    and cycleName LIKE '%_Final_%'
   ),
 
   vzw_status_mt5 AS (
@@ -75,7 +75,7 @@ WITH
 	FROM(
 	SELECT
 	t.*,
-    ROW_NUMBER() over (PARTITION BY t.tc_id ORDER BY t.testDate DESC) AS rn
+    ROW_NUMBER() over (PARTITION BY t.testCaseUniqueID ORDER BY t.testDate DESC) AS rn
     FROM vzw_status_mt5 AS t
 	) AS sub
     WHERE sub.rn =1
@@ -92,7 +92,7 @@ WITH
 	FROM(
 	SELECT
 	t.*,
-    ROW_NUMBER() over (PARTITION BY t.tc_id ORDER BY t.testDate DESC) AS rn
+    ROW_NUMBER() over (PARTITION BY t.testCaseUniqueID ORDER BY t.testDate DESC) AS rn
     FROM vzw_status_bz5 AS t
 	) AS sub
     WHERE sub.rn =1
@@ -109,7 +109,7 @@ WITH
 	FROM(
 	SELECT
 	t.*,
-    ROW_NUMBER() over (PARTITION BY t.tc_id ORDER BY t.testDate DESC) AS rn
+    ROW_NUMBER() over (PARTITION BY t.testCaseUniqueID ORDER BY t.testDate DESC) AS rn
     FROM vzw_status_fl5 AS t
 	) AS sub
     WHERE sub.rn =1
